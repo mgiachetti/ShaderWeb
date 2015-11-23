@@ -5,14 +5,14 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
 	<style type="text/css" media="screen">
-    #vertexeditor {
-        height: 400px;
-        width: 400px;
-        bottom: 0;
-        left: 0;
+    .editor {
+        height: 500px;
+        width: 100%;
     }
+		.col-sm-6 {
+			height: 700px;
+		}
 </style>
-
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
@@ -31,21 +31,37 @@
 		<div class="tab-content">
 		  <div id="vertex" class="tab-pane fade in active">
 		    <h3>Vertex Shader</h3>
-				<div id="vertexeditor">function foo(items) {
-  var x = "All this is syntax highlighted";
-  return x;
-}</div>
+				<div id="vertexeditor" class="editor">/**
+ * Multiply each vertex by the model-view matrix
+ * and the projection matrix (both provided by
+ * Three.js) to get a final vertex position
+ */
+void main() {
+    gl_Position = projectionMatrix *
+                  modelViewMatrix *
+                  vec4(position,1.0);
+}
+</div>
 		  </div>
 		  <div id="fragment" class="tab-pane fade">
 		    <h3>Fragment Shader</h3>
-				<div id="fragmenteditor">function foo(items) {
-  var x = "All this is syntax highlighted";
-  return x;
-}</div>
+				<div id="fragmenteditor" class="editor">/**
+ * Set the colour to a lovely pink.
+ * Note that the color is a 4D Float
+ * Vector, R,G,B and A and each part
+ * runs from 0.0 to 1.0
+ */
+void main() {
+    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+}
+</div>
 		  </div>
 		  <div id="main" class="tab-pane fade">
 		    <h3>Main</h3>
-		    <p>Some content main</p>
+				<div id="maineditor" class="editor">function foo(items) {
+  var x = "All this is syntax highlighted";
+  return x;
+}</div>
 		  </div>
 		</div>
 	</div>
@@ -53,11 +69,16 @@
 	<script>
 		var veditor = ace.edit("vertexeditor");
 		var feditor = ace.edit("fragmenteditor");
+		var meditor = ace.edit("maineditor");
 		veditor.setTheme("ace/theme/monokai");
-    veditor.getSession().setMode("ace/mode/javascript");
+    veditor.getSession().setMode("ace/mode/glsl");
 
 		feditor.setTheme("ace/theme/monokai");
-    feditor.getSession().setMode("ace/mode/javascript");
+    feditor.getSession().setMode("ace/mode/glsl");
+
+		meditor.setTheme("ace/theme/monokai");
+		meditor.getSession().setMode("ace/mode/javascript");
+
 		var DB = {};
 		DB.shaders = new Firebase('https://scorching-heat-801.firebaseio.com/shaders');
 
