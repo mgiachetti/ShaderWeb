@@ -2,8 +2,70 @@
 <html>
 <head>
 	<title>Shader test</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+	<style type="text/css" media="screen">
+    #vertexeditor {
+        height: 400px;
+        width: 400px;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 </head>
 <body>
 	<div>Shader Test!</div>
+	<div class="col-sm-6">
+		<div id="webgl"></div>
+	</div>
+	<div class="col-sm-6">
+		<ul class="nav nav-tabs">
+		  <li role="presentation" class="active"><a data-toggle="pill" href="#vertex">Vertex shader</a></li>
+		  <li role="presentation"><a data-toggle="pill" href="#fragment">Fragment Shader</a></li>
+		  <li role="presentation"><a data-toggle="pill" href="#main">Main</a></li>
+		</ul>
+		<div class="tab-content">
+		  <div id="vertex" class="tab-pane fade in active">
+		    <h3>Vertex Shader</h3>
+				<div id="vertexeditor">function foo(items) {
+  var x = "All this is syntax highlighted";
+  return x;
+}</div>
+		  </div>
+		  <div id="fragment" class="tab-pane fade">
+		    <h3>Fragment Shader</h3>
+				<div id="fragmenteditor">function foo(items) {
+  var x = "All this is syntax highlighted";
+  return x;
+}</div>
+		  </div>
+		  <div id="main" class="tab-pane fade">
+		    <h3>Main</h3>
+		    <p>Some content main</p>
+		  </div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+	<script>
+		var veditor = ace.edit("vertexeditor");
+		var feditor = ace.edit("fragmenteditor");
+		veditor.setTheme("ace/theme/monokai");
+    veditor.getSession().setMode("ace/mode/javascript");
+
+		feditor.setTheme("ace/theme/monokai");
+    feditor.getSession().setMode("ace/mode/javascript");
+		var DB = {};
+		DB.shaders = new Firebase('https://scorching-heat-801.firebaseio.com/shaders');
+
+		//DB.shaders.set({name: name, text: text});
+		//myDataRef.push({name: name, text: text});
+		DB.shaders.on('child_added', function(newData, oldData) {
+
+		})
+	</script>
 </body>
 </html>
